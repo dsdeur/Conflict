@@ -1,14 +1,14 @@
-require('./BloodStream.scss');
+import './BloodStream.scss';
 
 import React from 'react';
 import d3 from 'd3';
 import _ from 'lodash';
 import {getRandomReds} from '../utils/color.js';
-import DragScroll from './DragScroll.jsx';
+import FTScroll from './FTScroll.jsx';
 
-let margin = {top: 20, right: 55, bottom: 30, left: 100},
-    width  = window.innerWidth*10,
-    height = window.innerHeight*2/3;
+let margin = {top: 20, right: 0, bottom: 30, left: 0},
+    width  = window.innerWidth*6,
+    height = window.innerHeight*6/10;
 
 let x = d3.scale.ordinal()
     .rangeRoundBands([0, width])
@@ -65,6 +65,7 @@ class BloodStream extends React.Component {
     }
 
     renderStream(data, preparedData, uniqIds) {
+        console.log(preparedData, data);
         color.domain(uniqIds);
 
         let seriesArr = [],
@@ -90,24 +91,50 @@ class BloodStream extends React.Component {
         })]);
 
         svg.append("g")
-            .attr("class", "x axis")
+            .attr("class", "xaxis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
 
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis)
-            .append("text")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", ".71em")
-            .style("text-anchor", "end")
-            .text("Number of Battle related deaths");
+        // svg.append("g")
+        //     .attr("class", "y axis")
+        //     .call(yAxis)
+        //     .attr("transform", "translate(700,0)")
+        //     .append("text")
+        //     .attr("transform", "rotate(-90)")
+        //     .attr("y", 6)
+        //     .attr("dy", ".71em")
+        //     .style("text-anchor", "end")
+        //     .text("Number of Battle related deaths");
 
         let selection = svg.selectAll(".series")
             .data(seriesArr)
             .enter().append("g")
             .attr("class", "series");
+
+        svg.selectAll(".series")
+            .attr("opacity", 1)
+            .on("mouseover", (d, i) => {
+                console.log(d, i);
+                let values = _.sum(_.pluck(d.values, 'value'));
+                let dyadId = d.name;
+                let conflictData = data.filter((c) => {
+                    return c.dyadId == dyadId;
+                });
+
+                console.log(values, conflictData);
+
+                svg.selectAll(".series").transition()
+                    .duration(250)
+                    .attr("opacity", (d, j) => {
+                        return j != i ? 0.6 : 1;
+                    })
+            })
+            .on("mouseout", (d, i) => {
+                svg.selectAll(".series")
+                    .transition()
+                    .duration(250)
+                    .attr("opacity", "1");
+              })
 
         selection.append("path")
             .attr("class", "streamPath")
@@ -118,9 +145,9 @@ class BloodStream extends React.Component {
     render() {
         return (
             <div className="BloodStream">
-                <DragScroll max={window.innerWidth*10} ref="dragscroll">
+                <FTScroll scrollbars={false} scrollingY={false} bouncing={false}>
                     <div ref='chart'></div>
-                </DragScroll>
+                </FTScroll>
             </div>
         )
     }

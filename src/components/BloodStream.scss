@@ -1,4 +1,23 @@
 .BloodStream {
     width: 100%;
     overflow: hidden;
+
+    text {
+        font-family: 'Open Sans';
+        font-weight: 300;
+        stroke: #595b61;
+    }
+
+    .domain {
+        fill: none;
+        stroke: #7f828b;
+        stroke-width: .5;
+    }
+
+    .xaxis path, .xaxis line {
+        fill: none;
+        stroke: #7f828b;
+        stroke-width: .5;
+        shape-rendering: crispEdges;
+    }
 }
