@@ -1,9 +1,10 @@
 export function getRandomReds(length) {
     return _.range(length).map(i => {
-        let red = Math.floor(Math.random() * 150) + 50;
-        let green = Math.floor(Math.random() * 50) + 0;
-        let blue = Math.floor(Math.random() * 30) + 0;
-        return rgbToHex(red, 0, blue);
+        let gb = Math.floor(Math.random() * 50) + 20;
+        let red = Math.floor(Math.random() * 120) + 100;
+        let blue = gb + Math.floor(Math.random() * 10);
+
+        return rgbToHex(red, gb, blue);
     });
 }
 
