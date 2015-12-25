@@ -4,10 +4,13 @@ import React from 'react';
 import d3 from 'd3';
 import _ from 'lodash';
 import {getRandomReds} from '../utils/color.js';
-import FTScroll from './FTScroll.jsx';
+import Scroller from './Scroller.jsx';
+
+const YEAR_WIDTH = 300;
+const YEARS_COUNT = 26;
 
 let margin = {top: 20, right: 0, bottom: 30, left: 0},
-    width  = window.innerWidth*6,
+    width  = YEAR_WIDTH * 26,
     height = window.innerHeight*6/10;
 
 let x = d3.scale.ordinal()
@@ -43,6 +46,14 @@ let color = d3.scale.ordinal()
 let svg;
 
 class BloodStream extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            windowWidth: window.innerWidth
+        }
+    }
+
     componentDidMount() {
         svg = d3.select(this.refs.chart).append('svg')
             .attr("width",  width  + margin.left + margin.right)
@@ -58,10 +69,22 @@ class BloodStream extends React.Component {
     componentDidUpdate() {
         let {data, preparedData, uniqIds} = this.props;
         this.renderStream(data, preparedData, uniqIds);
+
+        window.addEventListener('resize', () => this.updateWindowWidth);
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('resize', () => this.updateWindowWidth);
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         return (JSON.stringify(this.props) != JSON.stringify(nextProps));
+    }
+
+    updateWindowWidth() {
+        this.setState({
+            windowWidth: window.innerWidth
+        });
     }
 
     renderStream(data, preparedData, uniqIds) {
@@ -94,17 +117,6 @@ class BloodStream extends React.Component {
             .attr("class", "xaxis")
             .attr("transform", "translate(0," + height + ")")
             .call(xAxis);
-
-        // svg.append("g")
-        //     .attr("class", "y axis")
-        //     .call(yAxis)
-        //     .attr("transform", "translate(700,0)")
-        //     .append("text")
-        //     .attr("transform", "rotate(-90)")
-        //     .attr("y", 6)
-        //     .attr("dy", ".71em")
-        //     .style("text-anchor", "end")
-        //     .text("Number of Battle related deaths");
 
         let selection = svg.selectAll(".series")
             .data(seriesArr)
@@ -143,11 +155,22 @@ class BloodStream extends React.Component {
     }
 
     render() {
+        let {windowWidth} = this.state,
+            correction = windowWidth/2 - YEAR_WIDTH/2,
+            styles = {
+                marginLeft: correction,
+                marginRight: correction
+            };
+
         return (
             <div className="BloodStream">
-                <FTScroll scrollbars={false} scrollingY={false} bouncing={false}>
-                    <div ref='chart'></div>
-                </FTScroll>
+                <Scroller
+                    correction={correction}
+                    stepsCount={YEARS_COUNT}
+                    stepWidth={YEAR_WIDTH}
+                >
+                    <div ref='chart' style={styles}></div>
+                </Scroller>
             </div>
         )
     }

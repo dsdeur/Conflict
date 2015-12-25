@@ -69,8 +69,8 @@ function fillYears(data, dyadIds) {
         return _.assign({}, idsObj, year);
     });
 
-    idsObj.year = 1988;
-    completeData.unshift(idsObj);
+    // idsObj.year = 1988;
+    // completeData.unshift(idsObj);
 
     return completeData;
 }
