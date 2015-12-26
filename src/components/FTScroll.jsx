@@ -15,7 +15,6 @@ class FTScroll extends React.Component {
     addEventListeners(events) {
         for (let key in events) {
             if (events.hasOwnProperty(key)) {
-                console.log(key, events[key])
                 this._scroller.addEventListener(key, events[key]);
             }
         }

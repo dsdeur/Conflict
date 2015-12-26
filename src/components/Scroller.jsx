@@ -15,6 +15,13 @@ class Scroller extends React.Component {
     }
 
     onScrollEnd(e) {
+        if(this._skipEnd) {
+            this._skipEnd = false;
+            return;
+        };
+
+        this._skipEnd = true;
+
         let {stepsCount} = this.props,
             left = e.scrollLeft,
             stepsArray = this.getSteps();
@@ -26,7 +33,7 @@ class Scroller extends React.Component {
 
         let closestIndex = this.findClosestIndex(stepsArray, left);
 
-        window.scroller.scrollTo(stepsArray[closestIndex], 0, 500);
+        setTimeout(() => this.refs.scroller.getScroller().scrollTo(stepsArray[closestIndex], 0, true), 0);
     }
 
     onScroll(e) {
@@ -65,11 +72,13 @@ class Scroller extends React.Component {
                 middle = Math.floor((stopIndex + startIndex)/2);
             }
 
-            let lowDiff = Math.abs(items[middle] - value),
-                highDiff = Math.abs(items[middle+1] - value);
+            let highOrLow = (items[middle] > value) ? -1 : 1;
+
+            let diff = Math.abs(items[middle] - value),
+                otherDiff = Math.abs(items[middle + highOrLow] - value);
 
             // console.log(items[middle], lowDiff, items[middle+1], highDiff);
-            return (lowDiff < highDiff) ? middle : middle+1;
+            return (diff < otherDiff) ? middle : middle+highOrLow;
     }
 
 
