@@ -1,7 +1,9 @@
 import React from 'react';
 import BloodStream from './BloodStream.jsx';
+import Stats from './Stats.jsx';
 
-import {getBRDData, prepareData} from '../Data.js';
+import {getBRDData, prepareData, getTotalsPerYear} from '../Data.js';
+import {START_YEAR} from '../utils/const.js';
 
 
 class App extends React.Component {
@@ -11,7 +13,9 @@ class App extends React.Component {
         this.state = {
             data: [],
             preparedData: [],
-            uniqIds: []
+            uniqIds: [],
+            totalsPerYear: [],
+            selectedYear: START_YEAR
         }
     }
 
@@ -19,19 +23,25 @@ class App extends React.Component {
         getBRDData((err, data) => {
             if(!err) {
                 let {preparedData, uniqIds} = prepareData(data);
-                this.setState({data, preparedData, uniqIds});
+                let totalsPerYear = getTotalsPerYear(preparedData);
+                this.setState({data, preparedData, uniqIds, totalsPerYear});
             } else {
                 console.log('Error loading data', err);
             }
         })
     }
 
+    changeSelectedYear(year) {
+        this.setState({selectedYear: year});
+    }
+
     render() {
-        let {...state} = this.state;
+        let {...state, totalsPerYear} = this.state;
 
         return (
             <div className="app">
-                <BloodStream {...state} />
+                <BloodStream {...state} changeSelectedYear={this.changeSelectedYear.bind(this)}/>
+                <Stats {...state} totalsPerYear={totalsPerYear}/>
             </div>
         )
     }

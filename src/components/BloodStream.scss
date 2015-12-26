@@ -1,6 +1,7 @@
 .BloodStream {
     width: 100%;
     overflow: hidden;
+    position: relative;
 
     text {
         font-family: 'Open Sans';
@@ -21,5 +22,16 @@
         stroke: #7f828b;
         stroke-width: .5;
         shape-rendering: crispEdges;
+    }
+
+    &__YearIndicator {
+        position:absolute;
+        width:1px;
+        left:50%;
+        border-left: 1px solid rgba(#7f828b, 1);
+        height: 20px;
+        bottom: 35px;
+        // margin-left: -150px;
+        background: white;
     }
 }

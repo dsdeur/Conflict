@@ -58,6 +58,28 @@ export function prepareData(data) {
     return {preparedData: _.sortBy(fillYears(transformedData, uniqIds), 'year'), uniqIds};
 }
 
+export function getTotalsPerYear(preparedData) {
+    return preparedData.map((obj) => {
+        return {
+            year: obj.year,
+            total: _.sum(_.omit(obj, 'year'))
+        }
+    });
+}
+
+export function getTotalsPerConflict(uniqIds, preparedData) {
+    return uniqIds.map((id) => {
+        let total = _.sum(preparedData.filter((x) => {
+            return entry.dyadId == id;
+        }), 'bdBest');
+
+        return {
+            total: total,
+            dyadId: id
+        }
+    });
+}
+
 function fillYears(data, dyadIds) {
     let idsObj = {};
 

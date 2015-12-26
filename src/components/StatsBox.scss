@@ -1,0 +1,11 @@
+.StatsBox {
+    width: 33%;
+    height:40vh;
+    float:left;
+    overflow: scroll;
+    padding: 20px;
+
+    &--two-thirds {
+        width: 66%;
+    }
+}

@@ -1,24 +1,53 @@
 import React, { PropTypes } from 'react'
 import FTScroll from './FTScroll.jsx';
+import {START_YEAR} from '../utils/const.js';
 
 class Scroller extends React.Component {
-    onScrollEnd(e) {
-        let {correction, stepsCount, stepWidth} = this.props,
-            left = e.scrollLeft,
+    getSteps() {
+        let {stepsCount, stepWidth} = this.props,
             stepsArray = [];
 
         for (let i = 0; i <= stepsCount; i++) {
             stepsArray.push(i*stepWidth);
         }
 
+        return stepsArray;
+    }
+
+    onScrollEnd(e) {
+        let {stepsCount} = this.props,
+            left = e.scrollLeft,
+            stepsArray = this.getSteps();
+
+        this.updateSelectedYear(left, stepsArray);
+
         // Prevent loop firing of onScrollEnd
         if(left == 0 || left == stepsArray[stepsCount-1]) return;
 
-        console.log(stepsArray, left, e.scrollLeft);
         let closestIndex = this.findClosestIndex(stepsArray, left);
-        console.log(closestIndex);
 
-        this.refs.scroller.getScroller().scrollTo(stepsArray[closestIndex], false, 20000);
+        window.scroller.scrollTo(stepsArray[closestIndex], 0, 500);
+    }
+
+    onScroll(e) {
+        // Only run this ones every 200 ms else skip it
+        if(this._skip) return;
+        this._skip = setTimeout(() => {
+            this._skip = false;
+        }, 200);
+
+        let {stepsCount} = this.props,
+            left = e.scrollLeft,
+            stepsArray = this.getSteps();
+
+        this.updateSelectedYear(left, stepsArray);
+    }
+
+    updateSelectedYear(left, stepsArray) {
+        let {changeSelectedYear} = this.props;
+
+        let closestIndex = this.findClosestIndex(stepsArray, left);
+        changeSelectedYear(START_YEAR+closestIndex);
     }
 
     findClosestIndex(items, value) {
@@ -39,9 +68,8 @@ class Scroller extends React.Component {
             let lowDiff = Math.abs(items[middle] - value),
                 highDiff = Math.abs(items[middle+1] - value);
 
-            console.log(items[middle], lowDiff, items[middle+1], highDiff);
+            // console.log(items[middle], lowDiff, items[middle+1], highDiff);
             return (lowDiff < highDiff) ? middle : middle+1;
-            var x
     }
 
 
@@ -52,8 +80,10 @@ class Scroller extends React.Component {
                 scrollbars={false}
                 scrollingY={false}
                 bouncing={false}
+                updateOnWindowResize={true}
                 events={{
                     scrollend: this.onScrollEnd.bind(this),
+                    scroll: this.onScroll.bind(this)
                 }}
             >
                 {this.props.children}

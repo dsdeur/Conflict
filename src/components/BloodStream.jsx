@@ -5,9 +5,8 @@ import d3 from 'd3';
 import _ from 'lodash';
 import {getRandomReds} from '../utils/color.js';
 import Scroller from './Scroller.jsx';
+import {YEAR_WIDTH, YEARS_COUNT} from '../utils/const.js';
 
-const YEAR_WIDTH = 300;
-const YEARS_COUNT = 26;
 
 let margin = {top: 20, right: 0, bottom: 30, left: 0},
     width  = YEAR_WIDTH * 26,
@@ -88,7 +87,6 @@ class BloodStream extends React.Component {
     }
 
     renderStream(data, preparedData, uniqIds) {
-        console.log(preparedData, data);
         color.domain(uniqIds);
 
         let seriesArr = [],
@@ -126,14 +124,14 @@ class BloodStream extends React.Component {
         svg.selectAll(".series")
             .attr("opacity", 1)
             .on("mouseover", (d, i) => {
-                console.log(d, i);
+                // console.log(d, i);
                 let values = _.sum(_.pluck(d.values, 'value'));
                 let dyadId = d.name;
                 let conflictData = data.filter((c) => {
                     return c.dyadId == dyadId;
                 });
 
-                console.log(values, conflictData);
+                // console.log(values, conflictData);
 
                 svg.selectAll(".series").transition()
                     .duration(250)
@@ -156,6 +154,7 @@ class BloodStream extends React.Component {
 
     render() {
         let {windowWidth} = this.state,
+            {changeSelectedYear} = this.props,
             correction = windowWidth/2 - YEAR_WIDTH/2,
             styles = {
                 marginLeft: correction,
@@ -164,10 +163,12 @@ class BloodStream extends React.Component {
 
         return (
             <div className="BloodStream">
+                <div className="BloodStream__YearIndicator"></div>
                 <Scroller
                     correction={correction}
                     stepsCount={YEARS_COUNT}
                     stepWidth={YEAR_WIDTH}
+                    changeSelectedYear={changeSelectedYear}
                 >
                     <div ref='chart' style={styles}></div>
                 </Scroller>
