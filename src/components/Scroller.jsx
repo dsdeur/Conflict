@@ -89,6 +89,7 @@ class Scroller extends React.Component {
                 scrollbars={false}
                 scrollingY={false}
                 bouncing={false}
+                maxFlingDuration={300}
                 updateOnWindowResize={true}
                 events={{
                     scrollend: this.onScrollEnd.bind(this),

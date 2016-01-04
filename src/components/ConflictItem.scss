@@ -1,4 +1,13 @@
 .ConflictItem {
     display: block;
-    margin: 10px 0;
+    margin: 15px 0;
+
+    abbr {
+        border-bottom: 0
+    }
+
+    &__Number {
+        font-weight: 600;
+        color:#f32020;
+    }
 }

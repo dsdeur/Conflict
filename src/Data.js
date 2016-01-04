@@ -80,6 +80,37 @@ export function getTotalsPerConflict(uniqIds, preparedData) {
     });
 }
 
+export function getTotalsPYPC(data, totalsPerYear) {
+    let years = {};
+
+    totalsPerYear.forEach((year) => {
+        let yearTotalCPY = {
+            year: year.year,
+        };
+
+        let conflicts = {};
+        console.log(year.year);
+        data.forEach((entry) => {
+            if(entry.year <= year.year) {
+                if(!conflicts[entry.dyadId]) {
+                    console.log('NEW CONFLICT');
+                    conflicts[entry.dyadId] = entry;
+                    conflicts[entry.dyadId].total = 0;
+                }
+
+                conflicts[entry.dyadId].total += entry.bdBest;
+            }
+        });
+
+        yearTotalCPY.conflicts = _.sortByOrder(_.values(conflicts), 'total', 'desc');
+        console.log(yearTotalCPY.conflicts);
+        years[year.year] = yearTotalCPY;
+    });
+
+    console.log(years);
+    return years;
+}
+
 function fillYears(data, dyadIds) {
     let idsObj = {};
 

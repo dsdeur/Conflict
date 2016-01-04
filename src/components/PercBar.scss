@@ -1,0 +1,23 @@
+.PercBar {
+    line-height: 5px;
+    height:5px;
+    width: 100%;
+    clear:both;
+
+    &__Empty {
+        display: inline-block;
+        border-top: 1px dotted;
+    }
+
+    &__Filled {
+        height: 2px;
+        display: inline-block;
+        background: #f32020;
+    }
+
+    &--animated {
+        .PercBar__Filled, .PercBar__Empty {
+            transition: width .3s ease;
+        }
+    }
+}

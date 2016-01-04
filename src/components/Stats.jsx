@@ -1,3 +1,4 @@
+import './Stats.scss'
 import React, { PropTypes } from 'react';
 import _ from 'lodash';
 import StatsBox from './StatsBox.jsx';
@@ -47,25 +48,28 @@ class Stats extends React.Component {
             totalSelectedYear = _.find(totalsPerYear, {year: selectedYear});
 
         return (
-            <div className="stats">
+            <div className="Stats">
                 <StatsBox>
-                    <h3>
-                        Total deaths {START_YEAR} - {selectedYear}:
-                        <MotionNumber number={total} />
-                    </h3>
+                    <div className="Stats__Totals">
+                        <h4>Total deaths {START_YEAR} - {selectedYear}:
+                            <MotionNumber number={total} /></h4>
 
-                    <h4>
-                        Total conflicts {START_YEAR} - {selectedYear}:
-                        <MotionNumber number={allSortedConflicts.length} />
-                    </h4>
-                    {allSortedConflicts.map((conflict) => {
-                        return <ConflictItem
-                            conflict={conflict}
-                            property="total"
-                            motionNumbers={true}
-                            key={conflict.dyadId + '_all'}
-                        />;
-                    })}
+                        <h5>
+                            Total conflicts {START_YEAR} - {selectedYear}:
+                            <MotionNumber number={allSortedConflicts.length} />
+                        </h5>
+                    </div>
+
+                    <div className="Stats__Conflicts">
+                        {allSortedConflicts.slice(0, 10).map((conflict) => {
+                            return <ConflictItem
+                                conflict={conflict}
+                                property="total"
+                                total={total}
+                                key={conflict.dyadId + '_all'}
+                            />;
+                        })}
+                    </div>
                 </StatsBox>
 
                 <StatsBox>
@@ -81,10 +85,11 @@ class Stats extends React.Component {
                         <span className="float-right">{formatNumber(sortedConflicts.length)}</span>
                     </h5>
 
-                    {sortedConflicts.map((conflict) => {
+                    {sortedConflicts.slice(0, 10).map((conflict) => {
                         return <ConflictItem
                             conflict={conflict}
                             property="bdBest"
+                            total={totalSelectedYear.total}
                             key={conflict.dyadId}
                         />;
                     })}

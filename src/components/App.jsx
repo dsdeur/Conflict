@@ -2,7 +2,7 @@ import React from 'react';
 import BloodStream from './BloodStream.jsx';
 import Stats from './Stats.jsx';
 
-import {getBRDData, prepareData, getTotalsPerYear} from '../Data.js';
+import {getBRDData, prepareData, getTotalsPerYear, getTotalsPYPC} from '../Data.js';
 import {START_YEAR} from '../utils/const.js';
 
 
@@ -15,6 +15,7 @@ class App extends React.Component {
             preparedData: [],
             uniqIds: [],
             totalsPerYear: [],
+            totalsPYPC: {},
             selectedYear: START_YEAR
         }
     }
@@ -41,7 +42,7 @@ class App extends React.Component {
         return (
             <div className="app">
                 <BloodStream {...state} changeSelectedYear={this.changeSelectedYear.bind(this)}/>
-                <Stats {...state} totalsPerYear={totalsPerYear}/>
+                <Stats {...state} totalsPerYear={totalsPerYear} />
             </div>
         )
     }
