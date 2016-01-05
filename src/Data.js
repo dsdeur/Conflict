@@ -70,7 +70,7 @@ export function getTotalsPerYear(preparedData) {
 export function getTotalsPerConflict(uniqIds, preparedData) {
     return uniqIds.map((id) => {
         let total = _.sum(preparedData.filter((x) => {
-            return entry.dyadId == id;
+            return x.dyadId == id;
         }), 'bdBest');
 
         return {
@@ -93,7 +93,6 @@ export function getTotalsPYPC(data, totalsPerYear) {
         data.forEach((entry) => {
             if(entry.year <= year.year) {
                 if(!conflicts[entry.dyadId]) {
-                    console.log('NEW CONFLICT');
                     conflicts[entry.dyadId] = entry;
                     conflicts[entry.dyadId].total = 0;
                 }

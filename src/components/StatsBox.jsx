@@ -1,5 +1,5 @@
 import './StatsBox.scss';
-import React, { PropTypes } from 'react'
+import React, { PropTypes } from 'react';
 
 class StatsBox extends React.Component {
     render () {

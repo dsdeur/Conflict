@@ -16,12 +16,10 @@ class ConflictItem extends React.Component {
                 </abbr>:
 
                 <span className="ConflictItem__Number">
-                    {!animated ?
-                        <span className="float-right">{formatNumber(conflict[property])}</span> :
-                        <MotionNumber number={conflict[property]} />}
+                    <span className="float-right">{formatNumber(conflict[property])}</span>
                 </span>
 
-                <PercBar perc={percentage} animated={true} />
+                <PercBar perc={percentage} animated={animated} />
             </small>
         );
     }

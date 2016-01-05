@@ -2,7 +2,7 @@ import React from 'react';
 import BloodStream from './BloodStream.jsx';
 import Stats from './Stats.jsx';
 
-import {getBRDData, prepareData, getTotalsPerYear, getTotalsPYPC} from '../Data.js';
+import {getBRDData, prepareData, getTotalsPerYear, getTotalsPerConflict} from '../Data.js';
 import {START_YEAR} from '../utils/const.js';
 
 
@@ -15,8 +15,10 @@ class App extends React.Component {
             preparedData: [],
             uniqIds: [],
             totalsPerYear: [],
+            totalsPerConflict: [],
             totalsPYPC: {},
-            selectedYear: START_YEAR
+            selectedYear: START_YEAR,
+            selectedConflict: null
         }
     }
 
@@ -25,7 +27,8 @@ class App extends React.Component {
             if(!err) {
                 let {preparedData, uniqIds} = prepareData(data);
                 let totalsPerYear = getTotalsPerYear(preparedData);
-                this.setState({data, preparedData, uniqIds, totalsPerYear});
+                let totalsPerConflict = getTotalsPerConflict(uniqIds, preparedData);
+                this.setState({data, preparedData, uniqIds, totalsPerYear, totalsPerConflict});
             } else {
                 console.log('Error loading data', err);
             }
@@ -33,16 +36,21 @@ class App extends React.Component {
     }
 
     changeSelectedYear(year) {
-        this.setState({selectedYear: year});
+        this.setState({selectedYear: year, selectedConflict: null});
     }
 
     render() {
-        let {...state, totalsPerYear} = this.state;
+        let {...state, totalsPerYear, selectedConflict, totalsPerConflict} = this.state;
 
         return (
             <div className="app">
                 <BloodStream {...state} changeSelectedYear={this.changeSelectedYear.bind(this)}/>
-                <Stats {...state} totalsPerYear={totalsPerYear} />
+                <Stats
+                    {...state}
+                    totalsPerYear={totalsPerYear}
+                    selectedConflict={selectedConflict}
+                    totalsPerConflict={totalsPerConflict}
+                />
             </div>
         )
     }

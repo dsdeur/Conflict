@@ -6,6 +6,7 @@ import {START_YEAR} from '../utils/const.js';
 import {formatNumber, abbr} from '../utils/format.js';
 import ConflictItem from './ConflictItem.jsx';
 import MotionNumber from './MotionNumber.jsx';
+import ConflictDetails from './ConflictDetails.jsx';
 
 
 class Stats extends React.Component {
@@ -41,11 +42,13 @@ class Stats extends React.Component {
     }
 
     render () {
-        let {data, selectedYear, preparedData, totalsPerYear} = this.props,
+        let {data, selectedYear, preparedData, totalsPerYear, totalsPerConflict} = this.props,
             total = this.getTotalDeaths(selectedYear, totalsPerYear),
             allSortedConflicts = this.getAllSortedConflicts(data, selectedYear),
             sortedConflicts = this.getSortedConflicts(selectedYear, data),
             totalSelectedYear = _.find(totalsPerYear, {year: selectedYear});
+
+        console.log(totalsPerConflict, preparedData);
 
         return (
             <div className="Stats">
@@ -66,6 +69,7 @@ class Stats extends React.Component {
                                 conflict={conflict}
                                 property="total"
                                 total={total}
+                                animated={true}
                                 key={conflict.dyadId + '_all'}
                             />;
                         })}
@@ -93,6 +97,10 @@ class Stats extends React.Component {
                             key={conflict.dyadId}
                         />;
                     })}
+                </StatsBox>
+
+                <StatsBox>
+                    <ConflictDetails conflict={sortedConflicts[0]} preparedData={preparedData}/>
                 </StatsBox>
             </div>
         )
