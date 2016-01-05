@@ -7,6 +7,7 @@ import {formatNumber, abbr} from '../utils/format.js';
 import ConflictItem from './ConflictItem.jsx';
 import MotionNumber from './MotionNumber.jsx';
 import ConflictDetails from './ConflictDetails.jsx';
+import ConflictList from './ConflictList.jsx';
 
 
 class Stats extends React.Component {
@@ -42,13 +43,19 @@ class Stats extends React.Component {
     }
 
     render () {
-        let {data, selectedYear, preparedData, totalsPerYear, totalsPerConflict} = this.props,
+        let {
+                data,
+                selectedYear,
+                preparedData,
+                totalsPerYear,
+                totalsPerConflict,
+                selectedConflict,
+                changeSelectedConflict
+            } = this.props,
             total = this.getTotalDeaths(selectedYear, totalsPerYear),
             allSortedConflicts = this.getAllSortedConflicts(data, selectedYear),
             sortedConflicts = this.getSortedConflicts(selectedYear, data),
-            totalSelectedYear = _.find(totalsPerYear, {year: selectedYear});
-
-        console.log(totalsPerConflict, preparedData);
+            totalSelectedYear = _.find(totalsPerYear, {year: selectedYear}) || 0;
 
         return (
             <div className="Stats">
@@ -63,45 +70,46 @@ class Stats extends React.Component {
                         </h5>
                     </div>
 
-                    <div className="Stats__Conflicts">
-                        {allSortedConflicts.slice(0, 10).map((conflict) => {
-                            return <ConflictItem
-                                conflict={conflict}
-                                property="total"
-                                total={total}
-                                animated={true}
-                                key={conflict.dyadId + '_all'}
-                            />;
-                        })}
+                    <ConflictList
+                        conflicts={allSortedConflicts}
+                        property="total"
+                        total={total}
+                        animated={true}
+                        selectedYear={selectedYear}
+                        changeSelectedConflict={changeSelectedConflict}
+                    />
+                </StatsBox>
+
+                <StatsBox>
+                    <div className="Stats__Totals">
+                        {(totalSelectedYear) ?
+                            <h4>
+                                Total deaths in {selectedYear}:
+                                <span className="number float-right">{formatNumber(totalSelectedYear.total)}</span>
+                            </h4>
+                        : null}
+
+                        <h5>
+                            Total conflict in {selectedYear}:
+                            <span className="number float-right">{formatNumber(sortedConflicts.length)}</span>
+                        </h5>
                     </div>
+
+                    <ConflictList
+                        conflicts={sortedConflicts}
+                        property="bdBest"
+                        total={totalSelectedYear.total}
+                        selectedYear={selectedYear}
+                        changeSelectedConflict={changeSelectedConflict}
+                    />
+
                 </StatsBox>
 
-                <StatsBox>
-                    {(totalSelectedYear) ?
-                        <h4>
-                            Total deaths in {selectedYear}:
-                            <span className="float-right">{formatNumber(totalSelectedYear.total)}</span>
-                        </h4>
-                    : null}
-
-                    <h5>
-                        Total conflict in {selectedYear}:
-                        <span className="float-right">{formatNumber(sortedConflicts.length)}</span>
-                    </h5>
-
-                    {sortedConflicts.slice(0, 10).map((conflict) => {
-                        return <ConflictItem
-                            conflict={conflict}
-                            property="bdBest"
-                            total={totalSelectedYear.total}
-                            key={conflict.dyadId}
-                        />;
-                    })}
-                </StatsBox>
-
-                <StatsBox>
-                    <ConflictDetails conflict={sortedConflicts[0]} preparedData={preparedData}/>
-                </StatsBox>
+                <ConflictDetails
+                    conflict={selectedConflict || sortedConflicts[0]}
+                    preparedData={preparedData}
+                    totalsPerConflict={totalsPerConflict}
+                />
             </div>
         )
     }

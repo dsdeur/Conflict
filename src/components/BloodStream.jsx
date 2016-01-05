@@ -131,13 +131,13 @@ class BloodStream extends React.Component {
                     return c.dyadId == dyadId;
                 });
 
-                // console.log(values, conflictData);
-
                 svg.selectAll(".series").transition()
                     .duration(250)
                     .attr("opacity", (d, j) => {
                         return j != i ? 0.6 : 1;
-                    })
+                    });
+
+                this.props.changeSelectedConflict(conflictData[0]);
             })
             .on("mouseout", (d, i) => {
                 svg.selectAll(".series")
@@ -154,7 +154,7 @@ class BloodStream extends React.Component {
 
     render() {
         let {windowWidth} = this.state,
-            {changeSelectedYear} = this.props,
+            {changeSelectedYear, selectedYear} = this.props,
             correction = windowWidth/2 - YEAR_WIDTH/2,
             styles = {
                 marginLeft: correction,
@@ -168,6 +168,7 @@ class BloodStream extends React.Component {
                     correction={correction}
                     stepsCount={YEARS_COUNT}
                     stepWidth={YEAR_WIDTH}
+                    selectedYear={selectedYear}
                     changeSelectedYear={changeSelectedYear}
                 >
                     <div ref='chart' style={styles}></div>

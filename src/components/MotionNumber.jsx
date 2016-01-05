@@ -8,7 +8,7 @@ class MotionNumber extends React.Component {
 
         return (
             <Motion defaultStyle={{x: 0}} style={{x: spring(number)}}>
-                {value => <span className="float-right">{formatNumber(Math.round(value.x))}</span>}
+                {value => <span className="float-right number">{formatNumber(Math.round(value.x))}</span>}
             </Motion>
         );
     }

@@ -1,3 +1,13 @@
 .Stats {
-    height: 33.9vh;
+    height: 31.2vh;
+    margin-top: 2vh;
+    background: #fbf0ec;
+    -webkit-box-shadow: 0px -1px 17px -4px rgba(0,0,0,0.20);
+    -moz-box-shadow: 0px -1px 17px -4px rgba(0,0,0,0.20);
+    box-shadow: 0px -1px 17px -4px rgba(0,0,0,0.20);
+
+    h4, h5 {
+        margin: 0;
+        white-space: nowrap;
+    }
 }

@@ -69,9 +69,9 @@ export function getTotalsPerYear(preparedData) {
 
 export function getTotalsPerConflict(uniqIds, preparedData) {
     return uniqIds.map((id) => {
-        let total = _.sum(preparedData.filter((x) => {
-            return x.dyadId == id;
-        }), 'bdBest');
+        let total = _.sum(preparedData.map((x) => {
+            return x[id];
+        }));
 
         return {
             total: total,

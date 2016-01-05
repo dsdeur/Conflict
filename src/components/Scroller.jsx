@@ -2,7 +2,42 @@ import React, { PropTypes } from 'react'
 import FTScroll from './FTScroll.jsx';
 import {START_YEAR} from '../utils/const.js';
 
+
 class Scroller extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            animate: true
+        }
+    }
+
+    componentDidMount() {
+        this.startAnimating();
+    }
+
+    stopAnimating() {
+        this.setState({animate: false});
+    }
+
+    startAnimating() {
+        this._left = 0;
+        this.animate();
+    }
+
+    animate() {
+        if(!this.state.animate) return;
+
+        requestAnimationFrame(this.animate.bind(this));
+        this._left += 1;
+
+        if(this._left % this.props.stepWidth == 0) {
+            this.props.changeSelectedYear(this.props.selectedYear +1);
+        }
+
+        this.refs.scroller.getScroller().scrollTo(this._left, 0, 4000);
+    }
+
     getSteps() {
         let {stepsCount, stepWidth} = this.props,
             stepsArray = [];
@@ -15,7 +50,7 @@ class Scroller extends React.Component {
     }
 
     onScrollEnd(e) {
-        if(this._skipEnd) {
+        if(this._skipEnd || this.state.animate) {
             this._skipEnd = false;
             return;
         };
@@ -38,7 +73,8 @@ class Scroller extends React.Component {
 
     onScroll(e) {
         // Only run this ones every 200 ms else skip it
-        if(this._skip) return;
+        if(this._skip || this.state.animate) return;
+
         this._skip = setTimeout(() => {
             this._skip = false;
         }, 200);
@@ -53,8 +89,10 @@ class Scroller extends React.Component {
     updateSelectedYear(left, stepsArray) {
         let {changeSelectedYear} = this.props;
 
-        let closestIndex = this.findClosestIndex(stepsArray, left);
-        changeSelectedYear(START_YEAR+closestIndex);
+        let closestIndex = this.findClosestIndex(stepsArray, left),
+            year = START_YEAR+closestIndex;
+
+        changeSelectedYear(year);
     }
 
     findClosestIndex(items, value) {
@@ -62,42 +100,47 @@ class Scroller extends React.Component {
             stopIndex   = items.length - 1,
             middle      = Math.floor((stopIndex + startIndex)/2);
 
-            while(items[middle] != value && startIndex < stopIndex){
-                if (value < items[middle]){
-                   stopIndex = middle - 1;
-                } else if (value > items[middle]){
-                   startIndex = middle + 1;
-                }
-
-                middle = Math.floor((stopIndex + startIndex)/2);
+        while(items[middle] != value && startIndex < stopIndex){
+            if (value < items[middle]){
+               stopIndex = middle - 1;
+            } else if (value > items[middle]){
+               startIndex = middle + 1;
             }
 
-            let highOrLow = (items[middle] > value) ? -1 : 1;
+            middle = Math.floor((stopIndex + startIndex)/2);
+        }
 
-            let diff = Math.abs(items[middle] - value),
-                otherDiff = Math.abs(items[middle + highOrLow] - value);
+        let highOrLow = (items[middle] > value) ? -1 : 1;
 
-            // console.log(items[middle], lowDiff, items[middle+1], highDiff);
-            return (diff < otherDiff) ? middle : middle+highOrLow;
+        let diff = Math.abs(items[middle] - value),
+            otherDiff = Math.abs(items[middle + highOrLow] - value);
+
+        // console.log(items[middle], lowDiff, items[middle+1], highDiff);
+        return (diff < otherDiff) ? middle : middle+highOrLow;
     }
 
 
     render () {
         return (
-            <FTScroll
-                ref="scroller"
-                scrollbars={false}
-                scrollingY={false}
-                bouncing={false}
-                maxFlingDuration={300}
-                updateOnWindowResize={true}
-                events={{
-                    scrollend: this.onScrollEnd.bind(this),
-                    scroll: this.onScroll.bind(this)
-                }}
+            <div
+                onMouseDown={this.stopAnimating.bind(this)}
+                onWheel={this.stopAnimating.bind(this)}
             >
-                {this.props.children}
-            </FTScroll>
+                <FTScroll
+                    ref="scroller"
+                    scrollbars={false}
+                    scrollingY={false}
+                    bouncing={false}
+                    maxFlingDuration={300}
+                    updateOnWindowResize={true}
+                    events={{
+                        scrollend: this.onScrollEnd.bind(this),
+                        scroll: this.onScroll.bind(this)
+                    }}
+                >
+                    {this.props.children}
+                </FTScroll>
+            </div>
         )
     }
 }
