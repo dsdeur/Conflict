@@ -1,6 +1,8 @@
 .ConflictItem {
     display: block;
     margin: 15px 0;
+    cursor:pointer;
+
 
     &:hover {
         background: rgba(#f32020, .2);
