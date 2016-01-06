@@ -1,0 +1,18 @@
+.MuteButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    color: black;
+    transition: color .3s ease;
+    opacity: .1;
+
+    i {
+        font-size: 25px;
+    }
+
+    &.intro {
+        color: white;
+    }
+}

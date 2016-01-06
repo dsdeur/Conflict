@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react'
 import Visualisation from './Visualisation.jsx';
 import Intro from './Intro.jsx';
+import MuteButton from './MuteButton.jsx';
 
 
 class App extends React.Component {
@@ -22,6 +23,7 @@ class App extends React.Component {
         return (
             <div>
                 {intro ? <Intro hideIntro={this.hideIntro.bind(this)} /> : <Visualisation />}
+                <MuteButton intro={intro}/>
             </div>
         )
     }

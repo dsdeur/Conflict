@@ -92,6 +92,10 @@ class ConflictDetails extends React.Component {
                                     <td>Battle Location:</td>
                                     <td>{conflict.battleLocation || '-'}</td>
                                 </tr>)}
+                                <tr>
+                                    <td>Total deaths:</td>
+                                    <td>{formatNumber(total.total)}</td>
+                                </tr>
                                 {this.checkAvailable(conflict.sideA, <tr>
                                     <td>Side A:</td>
                                     <td>{conflict.sideA || '-'}</td>
