@@ -50,7 +50,8 @@ class Stats extends React.Component {
                 totalsPerYear,
                 totalsPerConflict,
                 selectedConflict,
-                changeSelectedConflict
+                changeSelectedConflict,
+                changeDetailConflict
             } = this.props,
             total = this.getTotalDeaths(selectedYear, totalsPerYear),
             allSortedConflicts = this.getAllSortedConflicts(data, selectedYear),
@@ -77,6 +78,7 @@ class Stats extends React.Component {
                         animated={true}
                         selectedYear={selectedYear}
                         changeSelectedConflict={changeSelectedConflict}
+                        changeDetailConflict={changeDetailConflict}
                     />
                 </StatsBox>
 
@@ -101,6 +103,7 @@ class Stats extends React.Component {
                         total={totalSelectedYear.total}
                         selectedYear={selectedYear}
                         changeSelectedConflict={changeSelectedConflict}
+                        changeDetailConflict={changeDetailConflict}
                     />
 
                 </StatsBox>
@@ -109,6 +112,7 @@ class Stats extends React.Component {
                     conflict={selectedConflict || sortedConflicts[0]}
                     preparedData={preparedData}
                     totalsPerConflict={totalsPerConflict}
+                    small={true}
                 />
             </div>
         )

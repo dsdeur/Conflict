@@ -9,12 +9,19 @@ class ConflictItem extends React.Component {
         this.props.changeSelectedConflict(this.props.conflict);
     }
 
+    onClick() {
+        this.props.changeDetailConflict(this.props.conflict);
+    }
+
     render () {
         let {conflict, property, animated, total} = this.props,
             percentage = conflict[property] * 100 / total;
 
         return (
-            <small className="ConflictItem" onMouseEnter={this.onMouseEnter.bind(this)}>
+            <small
+                className="ConflictItem"
+                onMouseEnter={this.onMouseEnter.bind(this)}
+                onClick={this.onClick.bind(this)}>
                 <abbr title={conflict.sideA + ' - ' + conflict.sideB}>
                     {abbr(conflict.sideA, 30)} - {abbr(conflict.sideB, 30)}
                 </abbr>:

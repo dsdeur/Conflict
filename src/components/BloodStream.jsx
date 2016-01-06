@@ -145,6 +145,14 @@ class BloodStream extends React.Component {
                     .duration(250)
                     .attr("opacity", "1");
               })
+              .on("click", (d, i) => {
+                  let dyadId = d.name;
+                  let conflictData = data.filter((c) => {
+                      return c.dyadId == dyadId;
+                  });
+
+                  this.props.changeDetailConflict(conflictData[0]);
+              });
 
         selection.append("path")
             .attr("class", "streamPath")

@@ -2,10 +2,11 @@ import './Intro.scss';
 import React, { PropTypes } from 'react'
 
 const titles = [
-    "People disaggree with eachother, conflicts happen...",
-    'When groups of peoples dissagree they tend to start killing eachother',
-    'Is this really necesary?',
-    'Can we stop the blood stream?...'
+    "Every year thousands of people die in wars",
+
+    "Is this really necessary?",
+
+    <span>Why can’t we stop this <span className='red'>blood</span> shedding?</span>
 ];
 
 class Intro extends React.Component {
@@ -20,7 +21,7 @@ class Intro extends React.Component {
     }
 
     componentDidMount() {
-        this.hideAll();
+        setTimeout(this.nextSlide.bind(this), 3000);
     }
 
     hideAll() {
@@ -34,7 +35,7 @@ class Intro extends React.Component {
             setTimeout(this.hideAll.bind(this), 6000);
         } else {
             setTimeout(() => this.setState({fadeOut: 'fadeOut'}), 1000);
-            setTimeout(this.props.hideIntro, 1000);
+            setTimeout(this.props.hideIntro, 2000);
             this.setState({hide: true});
         }
     }

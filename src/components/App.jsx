@@ -8,7 +8,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            intro: false
+            intro: true
         }
     }
 
@@ -21,8 +21,7 @@ class App extends React.Component {
 
         return (
             <div>
-                <Visualisation />
-                {intro ? <Intro hideIntro={this.hideIntro.bind(this)} /> : null}
+                {intro ? <Intro hideIntro={this.hideIntro.bind(this)} /> : <Visualisation />}
             </div>
         )
     }

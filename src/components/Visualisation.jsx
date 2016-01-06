@@ -1,9 +1,11 @@
 import React from 'react';
 import BloodStream from './BloodStream.jsx';
 import Stats from './Stats.jsx';
+import ConflictDetails from './ConflictDetails.jsx';
 
 import {getBRDData, prepareData, getTotalsPerYear, getTotalsPerConflict} from '../Data.js';
 import {START_YEAR} from '../utils/const.js';
+
 
 
 class App extends React.Component {
@@ -18,7 +20,8 @@ class App extends React.Component {
             totalsPerConflict: [],
             totalsPYPC: {},
             selectedYear: START_YEAR,
-            selectedConflict: null
+            selectedConflict: null,
+            detailConflict: null
         }
     }
 
@@ -43,23 +46,45 @@ class App extends React.Component {
         this.setState({selectedConflict: conflict})
     }
 
+    changeDetailConflict(conflict) {
+        this.setState({detailConflict: conflict});
+    }
+
     render() {
-        let {...state, totalsPerYear, selectedConflict, totalsPerConflict} = this.state;
+        let {
+            totalsPerYear,
+            selectedConflict,
+            totalsPerConflict,
+            detailConflict,
+            preparedData,
+            ...state,
+        } = this.state;
 
         return (
             <div className="app">
                 <BloodStream
                     {...state}
+                    preparedData={preparedData}
                     changeSelectedYear={this.changeSelectedYear.bind(this)}
                     changeSelectedConflict={this.changeSelectedConflict.bind(this)}
+                    changeDetailConflict={this.changeDetailConflict.bind(this)}
                 />
                 <Stats
                     ref="stats"
                     {...state}
+                    preparedData={preparedData}
                     totalsPerYear={totalsPerYear}
                     selectedConflict={selectedConflict}
                     totalsPerConflict={totalsPerConflict}
                     changeSelectedConflict={this.changeSelectedConflict.bind(this)}
+                    changeDetailConflict={this.changeDetailConflict.bind(this)}
+                />
+
+                <ConflictDetails
+                    conflict={detailConflict}
+                    totalsPerConflict={totalsPerConflict}
+                    preparedData={preparedData}
+                    changeDetailConflict={this.changeDetailConflict.bind(this)}
                 />
             </div>
         )

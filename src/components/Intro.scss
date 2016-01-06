@@ -4,7 +4,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: #191818;
+    background: #161414;
     transition: opacity 1s ease;
 
     &.fadeOut {
@@ -29,5 +29,9 @@
 
     h1.visible {
         opacity: 1;
+    }
+
+    .red {
+        color: #f32020;
     }
 }

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react'
 import FTScroll from './FTScroll.jsx';
-import {START_YEAR} from '../utils/const.js';
+import {START_YEAR, END_YEAR} from '../utils/const.js';
 
 
 class Scroller extends React.Component {
@@ -13,7 +13,7 @@ class Scroller extends React.Component {
     }
 
     componentDidMount() {
-        this.startAnimating();
+        setTimeout(this.startAnimating.bind(this), 2000);
     }
 
     stopAnimating() {
@@ -32,7 +32,11 @@ class Scroller extends React.Component {
         this._left += 1;
 
         if(this._left % this.props.stepWidth == 0) {
-            this.props.changeSelectedYear(this.props.selectedYear +1);
+            if(this.props.selectedYear+1 == END_YEAR) {
+                this.stopAnimating();
+            } else {
+                this.props.changeSelectedYear(this.props.selectedYear +1);
+            }
         }
 
         this.refs.scroller.getScroller().scrollTo(this._left, 0, 4000);
