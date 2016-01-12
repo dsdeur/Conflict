@@ -21,23 +21,28 @@ class Intro extends React.Component {
     }
 
     componentDidMount() {
-        setTimeout(this.nextSlide.bind(this), 3000);
+        this._timer = setTimeout(this.nextSlide.bind(this), 3000);
     }
 
     hideAll() {
-        setTimeout(this.nextSlide.bind(this), 4000);
+        this._timer = setTimeout(this.nextSlide.bind(this), 4000);
         this.setState({hide: true});
     }
 
     nextSlide() {
         if(this.state.currentTitle+1 < titles.length) {
             this.setState({currentTitle: this.state.currentTitle+1, hide: false});
-            setTimeout(this.hideAll.bind(this), 6000);
+            this._timer = setTimeout(this.hideAll.bind(this), 6000);
         } else {
-            setTimeout(() => this.setState({fadeOut: 'fadeOut'}), 1000);
-            setTimeout(this.props.hideIntro, 2000);
-            this.setState({hide: true});
+            this.hideIntro();
         }
+    }
+
+    hideIntro() {
+        clearTimeout(this._timer);
+        setTimeout(() => this.setState({fadeOut: 'fadeOut'}), 1000);
+        setTimeout(this.props.hideIntro, 2000);
+        this.setState({hide: true});
     }
 
     render () {
@@ -57,6 +62,9 @@ class Intro extends React.Component {
                 <div className="Intro__Titles">
                     {titlesComps}
                 </div>
+                <button onClick={this.hideIntro.bind(this)} className="Intro__Skip">
+                    Skip intro <i className="fa fa-angle-double-right"></i>
+                </button>
             </div>
         )
     }

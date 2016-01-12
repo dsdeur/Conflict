@@ -34,4 +34,18 @@
     .red {
         color: #f32020;
     }
+
+    &__Skip {
+        background: none;
+        color: white;
+        border: none;
+        position: fixed;
+        bottom: 20px;
+        font-size: 12px;
+        opacity: .2;
+        width: 100px;
+        text-align: center;
+        left: 50%;
+        margin-left: -50px;
+    }
 }

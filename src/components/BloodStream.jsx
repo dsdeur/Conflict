@@ -6,6 +6,7 @@ import _ from 'lodash';
 import {getRandomReds} from '../utils/color.js';
 import Scroller from './Scroller.jsx';
 import {YEAR_WIDTH, YEARS_COUNT} from '../utils/const.js';
+import Credits from './Credits.jsx';
 
 
 let margin = {top: 20, right: 0, bottom: 30, left: 0},
@@ -69,11 +70,11 @@ class BloodStream extends React.Component {
         let {data, preparedData, uniqIds} = this.props;
         this.renderStream(data, preparedData, uniqIds);
 
-        window.addEventListener('resize', () => this.updateWindowWidth);
+        window.addEventListener('resize', () => this.updateWindowWidth());
     }
 
     componentWillUnmount() {
-        window.removeEventListener('resize', () => this.updateWindowWidth);
+        window.removeEventListener('resize', () => this.updateWindowWidth());
     }
 
     shouldComponentUpdate(nextProps, nextState) {
@@ -81,6 +82,7 @@ class BloodStream extends React.Component {
     }
 
     updateWindowWidth() {
+        this.updateHeight();
         this.setState({
             windowWidth: window.innerWidth
         });
@@ -164,9 +166,9 @@ class BloodStream extends React.Component {
         let {windowWidth} = this.state,
             {changeSelectedYear, selectedYear} = this.props,
             correction = windowWidth/2 - YEAR_WIDTH/2,
+            containerWidth = width + correction*2,
             styles = {
                 marginLeft: correction,
-                marginRight: correction
             };
 
         return (
@@ -179,7 +181,10 @@ class BloodStream extends React.Component {
                     selectedYear={selectedYear}
                     changeSelectedYear={changeSelectedYear}
                 >
-                    <div ref='chart' style={styles}></div>
+                    <div style={{width: containerWidth}}>
+                        <div ref='chart' className="BloodStream__Graph" style={styles}></div>
+                        <Credits width={correction + YEAR_WIDTH/2} height={height} />
+                    </div>
                 </Scroller>
             </div>
         )

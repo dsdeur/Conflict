@@ -1,0 +1,37 @@
+.Music {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    text-align: right;
+    transition: color 3s ease;
+
+    a, i {
+        color: black;
+        text-decoration: none;
+    }
+
+    &--intro {
+        a, i {
+            color: white;
+        }
+    }
+
+    &__Player {
+        display: none;
+    }
+
+    button {
+        background: none;
+        border: none;
+    }
+
+    .fa-youtube-play {
+        color: #f32020;
+    }
+
+    &:hover {
+        .Music__Player {
+            display: block;
+        }
+    }
+}

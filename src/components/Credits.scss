@@ -1,0 +1,30 @@
+.Credits {
+    margin-left: -150px;
+    padding: 50px;
+    text-align: center;
+    display: table;
+    float: right;
+
+    h3,h5 {
+        font-weight: 500;
+    }
+
+    h5 {
+        margin-bottom: 0;
+    }
+
+    a {
+        color: #f32020;
+    }
+
+    &__Links {
+        a {
+            margin-left: 5px;
+        }
+    }
+
+    &__Content {
+        display: table-cell;
+        vertical-align: middle;
+    }
+}
