@@ -29,7 +29,13 @@ module.exports = {
         ]
     },
     plugins: [
-        new ExtractTextPlugin("main.css")
+        new ExtractTextPlugin("main.css"),
+        new webpack.optimize.UglifyJsPlugin(),
+        new webpack.DefinePlugin({
+            NODE_ENV: 'production'
+        })
     ],
-
+    sassLoader: {
+        outputStyle: 'compressed'
+    }
 };

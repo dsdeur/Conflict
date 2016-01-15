@@ -3,7 +3,6 @@ import Visualisation from './Visualisation.jsx';
 import Intro from './Intro.jsx';
 import Music from './Music.jsx';
 
-
 class App extends React.Component {
     constructor(props) {
         super(props);
